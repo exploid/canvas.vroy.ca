@@ -1,0 +1,12 @@
+#map {
+  width: 1000px;
+  height: 600px;
+  border: 1px solid grey;
+}
+
+.point {
+  width: 10px;
+  height: 10px;
+  background-color:red;
+  z-index: 10000;
+}
