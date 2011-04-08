@@ -1,6 +1,10 @@
+$(document).ready(
+function() {
+
 var jug = new Juggernaut;
 
-jug.subscribe("channel1", function(data){
+var channel = $("#channel").val();
+jug.subscribe(channel, function(data){
   data = JSON.parse( data );
 
   var x = data[0];
@@ -10,8 +14,6 @@ jug.subscribe("channel1", function(data){
   $("#map").append( n );
 });
 
-$(document).ready(
-function() {
 
     $("#map").click(function(e){
             // console.log( e );
@@ -26,7 +28,7 @@ function() {
 
     function postCoordinates(x, y) {
         $.ajax({
-                url: "http://heatmap.vroy.ca/click/"+x+"/"+y,
+                url: "http://heatmap.vroy.ca/click/"+x+"/"+y+"/"+$("#channel").val(),
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader("X-Session-ID", jug.sessionID);
                 }
