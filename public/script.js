@@ -27,25 +27,33 @@ function() {
             $.getJSON( "/clear/"+$("#channel").val() );
         });
 
-    $("#map").click(function(e){
-            // console.log( e );
-            var x = e.pageX - this.offsetLeft;
-            var y = e.pageY - this.offsetTop;
-            
-            postCoordinates(x, y);
-
-            var n = $("<div class='point'></div>").css("left", x).css("top", y);
-            $(this).append( n );
+    // It sucks that the event doesn't have a click modifier in mousemove.
+    var canvas_clicked = false;
+    $("#map").mousedown(function(){ canvas_clicked = true; });
+    $(document).mouseup(function(){ canvas_clicked = false; });
+    
+    $("#map").mousemove(function(e) {
+            if (canvas_clicked == false) return;
+            postCoordinates(this, e);
         });
 
-    function postCoordinates(x, y) {
+    $("#map").click(function(e){
+            postCoordinates(this, e);
+        });
+
+    function postCoordinates(map, e) {
+        var x = e.pageX - map.offsetLeft;
+        var y = e.pageY - map.offsetTop;
+        
+        var n = $("<div class='point'></div>").css("left", x).css("top", y);
+        $(map).append( n );
+
         $.ajax({
-                url: "http://heatmap.vroy.ca/click/"+x+"/"+y+"/"+$("#channel").val(),
+                url: "/click/"+x+"/"+y+"/"+$("#channel").val(),
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader("X-Session-ID", jug.sessionID);
                 }
             });
-                
     }
 
 });
