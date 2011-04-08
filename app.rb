@@ -1,6 +1,7 @@
 require "rubygems"
 require "ramaze"
 require "json"
+require "juggernaut"
 
 Coordinates = []
 
@@ -24,6 +25,7 @@ class MainController < Ramaze::Controller
     x, y = x.to_i, y.to_i
     if x != 0 and y != 0
       Coordinates << [ x, y ]
+      Juggernaut.publish("channel1", [ x, y ].to_json, :except => request.env["HTTP_X_SESSION_ID"])
     end
   end
 
