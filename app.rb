@@ -26,6 +26,13 @@ class MainController < Ramaze::Controller
     render_template("index.xhtml")
   end
 
+  deny_layout :clear
+  def clear(channel)
+    Coordinates[channel] = []
+    Juggernaut.publish(channel, "clear".to_json)
+    return true.to_json
+  end
+
   def click(x, y, channel="index")
     x, y = x.to_i, y.to_i
     if x != 0 and y != 0
