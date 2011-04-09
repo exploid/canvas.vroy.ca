@@ -29,17 +29,22 @@ class MainController < Ramaze::Controller
   deny_layout :clear
   def clear(channel)
     Coordinates[channel] = []
-    Juggernaut.publish(channel, "clear".to_json)
+    Juggernaut.publish( channel, { :action => "clear" } )
     return true.to_json
   end
 
-  def click(x, y, channel="index")
-    x, y = x.to_i, y.to_i
-    if x != 0 and y != 0
-      Coordinates[channel] ||= []
-      Coordinates[channel] << [ x, y ]
-      Juggernaut.publish(channel, [ x, y ].to_json, :except => request.env["HTTP_X_SESSION_ID"])
-    end
+  # Action to receive clicks via AJAX posts.
+  # Expects an array of coordinates in the "clicks" key: [ [x1,y1], [x2,y2], [x3,y3] ]
+  # Expects a string to identify the channel in the "channel" key.
+  deny_layout :click
+  def click
+    channel = request[:channel]
+    Coordinates[channel] ||= []
+
+    clicks = request[:clicks].map{|x| x.last }
+
+    Coordinates[channel] << clicks
+    Juggernaut.publish(channel, clicks, :except => request.env["HTTP_X_SESSION_ID"])
   end
 
 end
