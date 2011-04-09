@@ -25,7 +25,7 @@ function() {
 
     /* ************************************************************* Events ***/
     $("#join").click(function() {
-            window.location = "/heatmap/"+$("#canvas_name").val();
+            window.location = "/"+$("#canvas_name").val();
         });
 
     $("#clear").click(function() {
