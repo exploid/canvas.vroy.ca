@@ -3,7 +3,7 @@ function() {
     /* ************************************************************* Onload ***/
     // Initialize canvas/context
     var canvas = document.getElementById("canvas");
-    $(".menu.colors .picked").css("background-color", "black");
+    selectColor("black");
 
     // Setup status variables
     var canvas_clicked = false;
@@ -51,8 +51,8 @@ function() {
             captureDrawing(e);
         });
 
-    $(".menu.colors div").click(function() {
-            $(".menu.colors .picked").css("background-color", $(this).css("background-color"));
+    $(".menu .color").click(function() {
+            selectColor( $(this).css("background-color") );
         });
     
     function loadCanvas() {
@@ -71,8 +71,12 @@ function() {
     }
 
     function selectedColor() {
-        return $(".menu.colors .picked").css("background-color");
+        return $(".menu .picked .color").css("background-color");
     }
+    function selectColor(color) {
+        $(".menu .picked .color").css("background-color", color);
+    }
+
 
     function captureDrawing(e) {
         var x = e.offsetX;
@@ -84,9 +88,9 @@ function() {
     function drawCanvasPoint(x, y, strokeStyle) {
         x = parseInt(x);
         y = parseInt(y);
-
+        
         var ctx = canvas.getContext("2d");
-        ctx.strokeStyle = selectedColor();
+        ctx.strokeStyle = (strokeStyle==undefined) ? selectedColor() : strokeStyle;
         ctx.lineWidth = 10;
         ctx.lineCap = "round";
         ctx.beginPath();

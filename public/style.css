@@ -4,13 +4,12 @@
 }
 
 #menubar div.menu {
-  float:left;
   height: 20px;
   margin-right: 20px;
   margin-bottom: 12px;
 }
 
-.menu.colors div {
+.menu .color {
   width: 19px;
   height: 19px;
   border-top: 1px solid black;
@@ -18,3 +17,9 @@
   margin-top: 2px;
   float:left;
 }
+
+.menu .picked div {
+  float:left;
+  margin-top: 2px;
+}
+.menu .picked .color { border: 1px solid black; }
