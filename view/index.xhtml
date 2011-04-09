@@ -1,19 +1,17 @@
 <html>
   <head>
-    <title>Heatmap experiment</title>
+    <title>Canvas experiment</title>
     <link type="text/css" rel="stylesheet" href="/style.css" />
     <script type="text/javascript" src="/jquery-1.5.min.js"></script>
     <script src="http://heatmap.vroy.ca:8080/application.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="/script.js"></script>
   </head>
   <body>
-    <h1>Heatmap experiment</h1>
-    <p>This is to see how relative click position works.</p>
-    <input type="text" id="channel" name="channel" value="#{@channel}" />
-    <button type="button" id="change_channel">Create/Join channel</button>
-    <button type="button" id="clear_channel">Clear channel</button>
-    <div id="map">
-      #{ @divs }
-    </div>
+    <h1>Canvas experiment</h1>
+    <input type="text" id="canvas_name" name="canvas_name" value="#{@canvas}" />
+    <button type="button" id="join">Create/Join canvas</button>
+    <button type="button" id="clear">Clear channel</button>
+    <br/>
+    <canvas id="canvas" width="600" height="200"></canvas>
   </body>
 </html>

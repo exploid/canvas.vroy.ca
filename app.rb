@@ -11,40 +11,38 @@ Coordinates = {}
 class MainController < Ramaze::Controller
   map '/'
   
-  def index
-    heatmap()
+  def index(canvas="index")
+    @canvas = canvas
   end
   
-  def heatmap(channel="index")
-    @channel = channel
-    @divs = ""
-
-    (Coordinates[channel] || []).each do |x, y|
-      @divs << %(<div class="point" style="left:#{x}; top:#{y};"></div>\n)
+  deny_layout :load_coordinates
+  def load(canvas)
+    coordinates = []
+    if !Coordinates[canvas].to_a.empty?
+      coordinates = Coordinates[canvas].first
     end
-
-    render_template("index.xhtml")
+    return coordinates.to_json
   end
 
   deny_layout :clear
-  def clear(channel)
-    Coordinates[channel] = []
-    Juggernaut.publish( channel, { :action => "clear" } )
+  def clear(canvas)
+    Coordinates[canvas] = []
+    Juggernaut.publish( canvas, { :action => "clear" } )
     return true.to_json
   end
 
   # Action to receive clicks via AJAX posts.
   # Expects an array of coordinates in the "clicks" key: [ [x1,y1], [x2,y2], [x3,y3] ]
-  # Expects a string to identify the channel in the "channel" key.
+  # Expects a string to identify the canvas in the "canvas" key.
   deny_layout :click
   def click
-    channel = request[:channel]
-    Coordinates[channel] ||= []
+    canvas = request[:canvas]
+    Coordinates[canvas] ||= []
 
     clicks = request[:clicks].map{|x| x.last }
 
-    Coordinates[channel] << clicks
-    Juggernaut.publish(channel, clicks, :except => request.env["HTTP_X_SESSION_ID"])
+    Coordinates[canvas] << clicks
+    Juggernaut.publish(canvas, clicks, :except => request.env["HTTP_X_SESSION_ID"])
   end
 
 end
