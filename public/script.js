@@ -3,10 +3,9 @@ function() {
     /* ************************************************************* Onload ***/
     // Initialize canvas/context
     var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
-    ctx.strokeStyle = 'red';
+    $(".menu.colors .picked").css("background-color", "black");
 
-    // Setup status variablesp
+    // Setup status variables
     var canvas_clicked = false;
     var captured_coordinates = [];
 
@@ -52,6 +51,9 @@ function() {
             captureDrawing(e);
         });
 
+    $(".menu.colors div").click(function() {
+            $(".menu.colors .picked").css("background-color", $(this).css("background-color"));
+        });
     
     function loadCanvas() {
         $.getJSON("/load/"+$("#canvas_name").val(), function(data) {
@@ -63,21 +65,28 @@ function() {
         for (var i in data) {
             var x = data[i][0];
             var y = data[i][1];
-            drawCanvasPoint(x, y);
+            var strokeStyle = data[i][2];
+            drawCanvasPoint(x, y, strokeStyle);
         }
+    }
+
+    function selectedColor() {
+        return $(".menu.colors .picked").css("background-color");
     }
 
     function captureDrawing(e) {
         var x = e.offsetX;
         var y = e.offsetY;
         drawCanvasPoint( x, y );
-        captured_coordinates.push( [x,y] );
+        captured_coordinates.push( [x, y, selectedColor()] );
     }
 
-    function drawCanvasPoint(x, y) {
+    function drawCanvasPoint(x, y, strokeStyle) {
         x = parseInt(x);
         y = parseInt(y);
 
+        var ctx = canvas.getContext("2d");
+        ctx.strokeStyle = selectedColor();
         ctx.lineWidth = 10;
         ctx.lineCap = "round";
         ctx.beginPath();
@@ -87,10 +96,9 @@ function() {
     }
 
     function clearCanvas() {
+        var ctx = canvas.getContext("2d");
         ctx.fillStyle = "#fff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = "red";
-        ctx.fillStyle = "red";
     }
 
     /* TODO: 
@@ -111,7 +119,7 @@ function() {
     function postClicks(canvas, clicks) {
         var data = {
             clicks: clicks,
-            canvas: canvas
+            canvas: canvas,
         }
         $.ajax({
                 url: "/click",
