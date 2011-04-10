@@ -53,7 +53,7 @@ class MainController < Ramaze::Controller
   end
 
   # Action to receive clicks via AJAX posts.
-  # Expects an array of coordinates in the "clicks" key: [ [x1,y1,color,shape], [x2,y2,color,shape], [x3,y3,color,shape] ]
+  # Expects an array of coordinates in the "clicks" key: [ [x1,y1,color,shape,size], [x2,y2,color,shape,size], [x3,y3,color,shape,size] ]
   # Expects a string to identify the canvas in the "canvas" key.
   deny_layout :click
   def click
