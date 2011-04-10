@@ -65,10 +65,10 @@ function() {
         for (var i in data) {
             var x = data[i][0];
             var y = data[i][1];
-            var strokeStyle = data[i][2];
-            var selectedShape = data[i][3];
-            var selectedSize = data[i][4];
-            drawCanvasPoint(x, y, strokeStyle, selectedShape, selectedSize);
+            var color = data[i][2];
+            var shape = data[i][3];
+            var size = data[i][4];
+            drawCanvasPoint(x, y, color, shape, size);
         }
     }
 
@@ -93,12 +93,12 @@ function() {
         captured_coordinates.push( [x, y, selectedColor(), selectedShape(), selectedSize() ] );
     }
 
-    function drawCanvasPoint(x, y, strokeStyle, shape, size) {
+    function drawCanvasPoint(x, y, color, shape, size) {
         x = parseInt(x);
         y = parseInt(y);
         
         var ctx = canvas.getContext("2d");
-        ctx.strokeStyle = (strokeStyle==undefined) ? selectedColor() : strokeStyle;
+        ctx.strokeStyle = (color==undefined) ? selectedColor() : color;
         ctx.lineWidth = (size==undefined) ? selectedSize() : size;
         ctx.lineCap = (shape==undefined) ? selectedShape() : shape;
         ctx.beginPath();
