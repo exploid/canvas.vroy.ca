@@ -67,7 +67,8 @@ function() {
             var y = data[i][1];
             var strokeStyle = data[i][2];
             var selectedShape = data[i][3];
-            drawCanvasPoint(x, y, strokeStyle, selectedShape);
+            var selectedSize = data[i][4];
+            drawCanvasPoint(x, y, strokeStyle, selectedShape, selectedSize);
         }
     }
 
@@ -80,22 +81,25 @@ function() {
     function selectedShape() {
         return $(".shape").val();
     }
+    function selectedSize() {
+        return parseInt( $(".size").val() );
+    }
 
 
     function captureDrawing(e) {
         var x = e.offsetX;
         var y = e.offsetY;
         drawCanvasPoint( x, y );
-        captured_coordinates.push( [x, y, selectedColor(), selectedShape() ] );
+        captured_coordinates.push( [x, y, selectedColor(), selectedShape(), selectedSize() ] );
     }
 
-    function drawCanvasPoint(x, y, strokeStyle, shape) {
+    function drawCanvasPoint(x, y, strokeStyle, shape, size) {
         x = parseInt(x);
         y = parseInt(y);
         
         var ctx = canvas.getContext("2d");
         ctx.strokeStyle = (strokeStyle==undefined) ? selectedColor() : strokeStyle;
-        ctx.lineWidth = 10;
+        ctx.lineWidth = (size==undefined) ? selectedSize() : size;
         ctx.lineCap = (shape==undefined) ? selectedShape() : shape;
         ctx.beginPath();
         ctx.moveTo(x, y);

@@ -18,6 +18,7 @@ unless DB.table_exists? :coordinates
     String :y
     String :color
     String :shape
+    String :size
   end
 end
 
@@ -27,7 +28,7 @@ class Coordinate < Sequel::Model(DB[:coordinates])
   end
   def self.load(canvas)
     DB["SELECT * FROM canvas.coordinates WHERE canvas=?", canvas].map do |coord|
-      [ coord[:x], coord[:y], coord[:color], coord[:shape] ]
+      [ coord[:x], coord[:y], coord[:color], coord[:shape], coord[:size] ]
     end
   end
 end
@@ -64,7 +65,8 @@ class MainController < Ramaze::Controller
                         :x => click[0],
                         :y => click[1],
                         :color => click[2],
-                        :shape => click[3])
+                        :shape => click[3],
+                        :size => click[4])
     end
       
     Juggernaut.publish(canvas, clicks, :except => request.env["HTTP_X_SESSION_ID"])
