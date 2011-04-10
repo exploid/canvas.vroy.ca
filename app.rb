@@ -17,6 +17,7 @@ unless DB.table_exists? :coordinates
     String :x
     String :y
     String :color
+    String :shape
   end
 end
 
@@ -26,7 +27,7 @@ class Coordinate < Sequel::Model(DB[:coordinates])
   end
   def self.load(canvas)
     DB["SELECT * FROM canvas.coordinates WHERE canvas=?", canvas].map do |coord|
-      [ coord[:x], coord[:y], coord[:color] ]
+      [ coord[:x], coord[:y], coord[:color], coord[:shape] ]
     end
   end
 end
@@ -51,7 +52,7 @@ class MainController < Ramaze::Controller
   end
 
   # Action to receive clicks via AJAX posts.
-  # Expects an array of coordinates in the "clicks" key: [ [x1,y1,color], [x2,y2,color], [x3,y3,color] ]
+  # Expects an array of coordinates in the "clicks" key: [ [x1,y1,color,shape], [x2,y2,color,shape], [x3,y3,color,shape] ]
   # Expects a string to identify the canvas in the "canvas" key.
   deny_layout :click
   def click
@@ -62,7 +63,8 @@ class MainController < Ramaze::Controller
       Coordinate.create(:canvas => canvas,
                         :x => click[0],
                         :y => click[1],
-                        :color => click[2])
+                        :color => click[2],
+                        :shape => click[3])
     end
       
     Juggernaut.publish(canvas, clicks, :except => request.env["HTTP_X_SESSION_ID"])
