@@ -1,21 +1,41 @@
 <html>
   <head>
     <title>canvas &raquo; vroy.ca</title>
-    <link type="text/css" rel="stylesheet" href="/style.css" />
+
+    <link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print" />
+    <!--[if lt IE 8]>
+      <link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection" />
+    <![endif]-->
+    <link rel="stylesheet" href="/css/blueprint/vroy.ca.css" type="text/css" media="screen, projection" />
+
+    <link type="text/css" rel="stylesheet" href="/css/style.css" />
+
     <script type="text/javascript" src="/jquery-1.5.min.js"></script>
     <script src="http://canvas.vroy.ca:8080/application.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="/script.js"></script>
   </head>
   <body>
-    <h1>canvas &raquo; vroy.ca</h1>
     <a href="http://github.com/exploid/canvas.vroy.ca"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://d3nwyuy0nl342s.cloudfront.net/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
-    <div id="menubar">
-      <div class="menu">
+
+    <div class="container">
+      
+      <!-- Header -->
+      <div id="header">
+        <div class="span-14"><h2>#{@canvas}</h2></div>
+        <div class="span-10 last"><h1>canvas &raquo; vroy.ca</h1></div>
+      </div>
+      <div class="span-24 header-separator"></div>
+      <!-- /Header -->
+
+      <!-- Canvas -->
+      <div class="span-24">
         <input type="text" id="canvas_name" name="canvas_name" value="#{@canvas}" />
         <button type="button" id="join">Create/Join canvas</button>
         <button type="button" id="clear">Clear canvas</button>
       </div>
-      <div class="menu">
+
+      <div id="menu" class="span-24">
         <div class="color" title="Maroon" style="background-color:maroon;"></div>
         <div class="color" title="Red" style="background-color:red;"></div>
         <div class="color" title="Orange" style="background-color:orange;"></div>
@@ -33,6 +53,7 @@
         <div class="color" title="Black" style="background-color:black;"></div>
         <div class="color" title="Silver" style="background-color:silver;"></div>
         <div class="color" title="Gray" style="background-color:gray;"></div>
+
         <div class="picked">
           <div>&nbsp;&nbsp;Picked color:&nbsp;&nbsp;</div>
           <div class="color"></div>
@@ -73,13 +94,12 @@
             <option value="20">20</option>
           </select>
         </div>
-        
-
       </div>
-
     </div>
     
-    <canvas id="canvas" width="900px" height="450px"></canvas>
+    <div id="canvas-wrapper" class="span-24 last">
+      <canvas id="canvas" width="600px" height="350px"></canvas>
+    </div>
 
   </body>
 </html>

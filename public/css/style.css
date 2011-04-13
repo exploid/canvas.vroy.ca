@@ -1,0 +1,21 @@
+#canvas {
+  border: 1px solid grey;
+  cursor: crosshair;
+}
+
+#menu div { float: left; }
+
+.color {
+  width: 19px;
+  height: 19px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  margin-top: 2px;
+}
+
+.picked div {
+  margin-top: 2px;
+}
+.picked .color { border: 1px solid black; }
+
+
