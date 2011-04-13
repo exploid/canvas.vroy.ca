@@ -51,7 +51,7 @@ function() {
             captureDrawing(e);
         });
 
-    $(".menu .color").click(function() {
+    $(".color").click(function() {
             selectColor( $(this).css("background-color") );
         });
     
@@ -73,10 +73,10 @@ function() {
     }
 
     function selectedColor() {
-        return $(".menu .picked .color").css("background-color");
+        return $(".picked .color").css("background-color");
     }
     function selectColor(color) {
-        $(".menu .picked .color").css("background-color", color);
+        $(".picked .color").css("background-color", color);
     }
     function selectedShape() {
         return $(".shape").val();
