@@ -54,6 +54,8 @@ function() {
     $(".color").click(function() {
             selectColor( $(this).css("background-color") );
         });
+
+    $("#save").click( saveImage );
     
     function loadCanvas() {
         $.getJSON("/load/"+$("#canvas_name").val(), function(data) {
@@ -113,16 +115,10 @@ function() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    /* TODO: 
-    function saveImage() {
-        $("#save").click(function(){ 
-            $("#result").append("<br /><br /><img src="+
-            canvas.toDataURL()+ 
-           " /><br /><a href="+canvas.toDataURL()+ 
-           " target='_blank'>show</a>");
-        });
-    */
-
+    /* For now, open image in a new tab so the image can be saved as. */
+    function saveImage(e) {
+        window.open(canvas.toDataURL());
+    }
 
     /*
       canvas = string
