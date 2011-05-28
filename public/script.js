@@ -115,9 +115,17 @@ function() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    /* For now, open image in a new tab so the image can be saved as. */
     function saveImage(e) {
-        window.open(canvas.toDataURL());
+        // Post image to the server so it can be saved and served for download in the callback.
+        // I couldn't get it to work by passing the image information through a GET request and
+        // sending back the file immediately.
+        var opts = {
+            image: canvas.toDataURL("image/png"),
+            canvas_name: $("#canvas_name").val()
+        }
+        $.post("/save_image", opts, function(data) {
+                window.location = window.location.origin + data.filename;
+            }, "JSON");
     }
 
     /*
