@@ -1,6 +1,6 @@
 require "rubygems"
 
-gem "ramaze", "2009.03"
+gem "ramaze", "2011.10.23"
 require "ramaze"
 
 # Ramaze::Log.ignored_tags = [:debug, :info]
@@ -39,17 +39,17 @@ end
 
 class MainController < Ramaze::Controller
   map '/'
+
+  set_layout 'layout' => [:index]
   
   def index(canvas="index")
     @canvas = canvas
   end
   
-  deny_layout :load
   def load(canvas)
     return Coordinate.load(canvas).to_json
   end
 
-  deny_layout :clear
   def clear(canvas)
     Coordinate.clear(canvas)
     Juggernaut.publish( canvas, { :action => "clear" } )
@@ -59,7 +59,6 @@ class MainController < Ramaze::Controller
   # Action to receive clicks via AJAX posts.
   # Expects an array of coordinates in the "clicks" key: [ [x1,y1,color,shape,size], [x2,y2,color,shape,size], [x3,y3,color,shape,size] ]
   # Expects a string to identify the canvas in the "canvas" key.
-  deny_layout :click
   def click
     canvas = request[:canvas]
 
@@ -76,7 +75,6 @@ class MainController < Ramaze::Controller
     Juggernaut.publish(canvas, clicks, :except => request.env["HTTP_X_SESSION_ID"])
   end
 
-  deny_layout :save_image
   def save_image
     canvas_name = h(request[:canvas_name])
 
@@ -89,7 +87,6 @@ class MainController < Ramaze::Controller
     return { :filename => "/download_image/#{canvas_name}.png" }.to_json
   end
 
-  deny_layout :download_image
   def download_image(canvas_name)
     send_data_as_file( File.read("saved_images/#{h(canvas_name)}"), "#{h(canvas_name)}", "image/png" )
   end
