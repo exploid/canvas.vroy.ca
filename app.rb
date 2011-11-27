@@ -96,8 +96,8 @@ class MainController < Ramaze::Controller
   # Based on a more recent version of the send_file helper.
   # https://github.com/Ramaze/ramaze/blob/a96af85d1572b6bf06ee1e1d58d576db25c78af0/lib/ramaze/helper/send_file.rb
   def send_data_as_file(data, filename, content_type)
-    response.body = data
-    response['Content-Length'] = data.size.to_s
+    response.body = [data]
+    response['Content-Length'] = data.bytesize.to_s
     response['Content-Type'] = content_type
     response['Content-Disposition'] = "Content-disposition: attachment; filename=#{filename}"
     response.status = 200
