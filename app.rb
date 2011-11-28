@@ -10,29 +10,27 @@ require "base64"
 require "json"
 require "juggernaut"
 
-require "sequel"
-
-DB = Sequel.connect("mysql://root:asdf@localhost/canvas")
-
-unless DB.table_exists? :coordinates
-  DB.create_table :coordinates do
-    primary_key :id
-    String :canvas
-    String :x
-    String :y
-    String :color
-    String :shape
-    String :size
-  end
+require "mongoid"
+Mongoid.configure do |config|
+  config.master = Mongo::Connection.new.db("canvas_vroy_ca")
 end
 
-class Coordinate < Sequel::Model(DB[:coordinates])
+class Coordinate
+  include Mongoid::Document
+  
+  field :canvas, type: String
+  field :x, type: String
+  field :y, type: String
+  field :color, type: String
+  field :shape, type: String
+  field :size, type: String
+
   def self.clear(canvas)
-    self.filter(:canvas => canvas).delete
+    Coordinate.where(canvas: canvas).delete_all
   end
   def self.load(canvas)
-    DB["SELECT * FROM canvas.coordinates WHERE canvas=?", canvas].map do |coord|
-      [ coord[:x], coord[:y], coord[:color], coord[:shape], coord[:size] ]
+    Coordinate.where(canvas: canvas).map do |coord|
+      [ coord.x, coord.y, coord.color, coord.shape, coord.size ]
     end
   end
 end
@@ -40,8 +38,6 @@ end
 class MainController < Ramaze::Controller
   map '/'
 
-  set_layout 'layout' => [:index]
-  
   def index(canvas="index")
     @canvas = canvas
   end
